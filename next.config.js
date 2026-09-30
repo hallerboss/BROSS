@@ -15,7 +15,11 @@ module.exports = bundleAnalyzer({
           {
             key: 'Content-Security-Policy',
             value:
-              'frame-ancestors https://*.builder.io https://builder.io http://localhost:1234',
+              // In development allow any origin to embed the app so the Base44
+              // preview iframe can render it; production keeps the strict policy.
+              process.env.NODE_ENV === 'production'
+                ? 'frame-ancestors https://*.builder.io https://builder.io http://localhost:1234'
+                : 'frame-ancestors *',
           },
         ],
       },
